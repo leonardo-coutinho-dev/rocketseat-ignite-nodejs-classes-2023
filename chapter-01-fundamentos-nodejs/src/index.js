@@ -6,6 +6,8 @@ const app = express();
 
 app.use(express.json());
 
+const PORT = 3333;
+
 // FinAPI - Financeira (primeira aplicação - verificar README)
 
 /**
@@ -50,6 +52,10 @@ let getBalance = (statement) => {
 // app.use(verifyExistsAccountCPF); todos os requests abaixo passaram a utilizar o middleware
 
 // ROUTES
+
+app.get('/', (req, res) => {
+    return res.json({message: "Olá, o servidor está rodando perfeitamente! Nodemon running & updating the API!"});
+})
 
 app.post('/account', (req, res) => {
     const {cpf, name} = req.body;
@@ -163,37 +169,67 @@ app.get('/balance', verifyExistsAccountCPF, (req, res) => {
     return res.json(balance);
 })
 
-app.listen(3333);
+app.listen(PORT, () => {
+    console.log(`The server is running on port ${PORT}`);
+});
 
 // FUNDAMENTOS do Node.js - verbos HTTP
+
+/**
+ * GET - Buscar uma informação dentro do servidor
+ * POST - Inserir uma informação no servidor
+ * PUT - Alterar uma informação no servidor
+ * PATCH - Alterar uma informação específica no servidor
+ * DELETE - Deletar uma informação no servidor
+ */
+
+/**
+ * ROUTE PARAMS => Identificar um recurso para buscar/editar/deletar esse recurso;
+ * QUERY PARAMS => Paginação/filtro de busca
+ * BODY PARAMS => Os objetos que vamos passar quando formos fazer uma inserção/alteração de dados (JSON)
+ */
 
 // app.get('/', (req, res) => {
 //     return res.json({message: "Fundamentos Node.js - RocketSeat - Ignite!"});
 // })
 
-// app.get('/courses', (req,res) => {
-//     const query = req.query;
-//     console.log(query);
-//     return res.status(200).json(["Curso 1", "Curso 2", "Curso 3"]);
-// })
+// query params
 
-// app.post('/courses', (req, res) => {
-//     const body = req.body;
-//     console.log(body);
-//     return res.json(["Curso 1", "Curso 2", "Curso 3", "Curso 4"]);
-// })
+app.get('/courses', (req,res) => {
+    const query = req.query;
+    console.log(query);
+    return res.status(200).json(["Curso 1", "Curso 2", "Curso 3"]);
+})
 
-// app.put('/courses/:id', (req, res) => {
-//     const params = req.params;
-//     console.log(params);
-//     return res.json(["Curso 6", "Curso 2", "Curso 3", "Curso 4"]);
-// })
+// body params
 
-// app.patch('/courses/:id', (req, res) => {
-//     return res.json(["Curso 6", "Curso 7", "Curso 3", "Curso 4"]);
-// })
+app.post('/courses', (req, res) => {
+    const body = req.body;
+    console.log(body);
+    return res.status(200).json(["Curso 1", "Curso 2", "Curso 3", "Curso 4"]);
+})
 
-// app.delete('/courses/:id', (req, res) => {
-//     return res.json(["Curso 1", "Curso 2", "Curso 4"]);
-// })
+// route params
+
+app.put('/courses/:id', (req, res) => {
+    const params = req.params;
+    console.log(params);
+    return res.status(200).json(["Curso 6", "Curso 2", "Curso 3", "Curso 4"]);
+})
+
+// route params
+
+app.patch('/courses/:id', (req, res) => {
+    const params = req.params;
+    console.log(params);
+    return res.status(200).json(["Curso 6", "Curso 7", "Curso 3", "Curso 4"]);
+})
+
+// route params
+
+app.delete('/courses/:id', (req, res) => {
+    const params = req.params;
+    console.log(`The account with the id ${params.id} was deleted!`);
+    return res.status(200).json(["Curso 1", "Curso 2", "Curso 4"]);
+})
 
